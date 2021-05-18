@@ -12,9 +12,11 @@ def bad_request(response):
 def method_not_allowed(e):
     return jsonify({'error': "405 Method Not Allowed"}), 405
 
+
 @app.route('/')
 def hello_world():
-  return 'Hello, World!'
+    return 'Hello, World!'
+
 
 @app.route('/product', methods=['POST'])
 def index():
