@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, abort
 import json
 from json2html import *
+import os
 
 app = Flask(__name__)
 
@@ -25,9 +26,12 @@ numbers = [1, 2, 3, 4]
 @app.route('/recipe/<number>')
 def index(number):
     if number.isnumeric() and int(number) in numbers:
-        with open(number+'.json') as f:
+        with open(os.path.join(sys.path[0], number+'.json'), 'r') as f:
             data = json.load(f)
-        return json2html.convert(data)
+        if 'Content-Type' in request.headers and request.headers['Content-Type'] == 'application/json':
+            return data
+        else:
+            return json2html.convert(json=data)
     else:
         abort(400)
 
